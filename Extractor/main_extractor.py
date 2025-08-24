@@ -6,11 +6,11 @@ import yaml
 from dotenv import load_dotenv
 from sqlalchemy import text
 
-from api_extractor import APIExtractor
-from csv_extractor import CSVExtractor
-from database_connector import DatabaseConnector
-from json_extractor import JSONExtractor
-from s3_extractor import PublicS3Extractor
+from Extractor.api_extractor import APIExtractor
+from Extractor.csv_extractor import CSVExtractor
+from Extractor.database_connector import DatabaseConnector
+from Extractor.json_extractor import JSONExtractor
+from Extractor.s3_extractor import PublicS3Extractor
 
 load_dotenv()
 
@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 class MainExtractor:
     def __init__(self, config_path=None):
         if config_path is None:
-            # This sets the path to "Extractor/config.yaml" relative to this file
+            
             config_path = os.path.join(os.path.dirname(__file__), "config.yaml")
         self.config = self.load_config(config_path)
         self.setup_extractors()
@@ -60,7 +60,7 @@ class MainExtractor:
     def extract_s3_data(self):
         logger.info("Starting S3 data extraction")
         try:
-            # Truncate all S3-related tables before extraction
+
             for s3_key, table_name in self.config["s3"]["files"].items():
                 self.truncate_table(table_name, schema="landing")
 
@@ -73,7 +73,7 @@ class MainExtractor:
     def extract_api_data(self):
         logger.info("Starting API data extraction")
         try:
-            # Truncate all API-related tables before extraction
+           
             for url, table_name in self.config["api"]["endpoints"].items():
                 self.truncate_table(table_name, schema="landing")
 
